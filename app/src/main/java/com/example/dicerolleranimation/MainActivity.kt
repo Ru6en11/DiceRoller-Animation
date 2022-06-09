@@ -25,16 +25,18 @@ class MainActivity : AppCompatActivity() {
         diceImage = findViewById(R.id.dice_image)
         tvSum = findViewById(R.id.tvSum)
 
+        var sum = 1;
         diceImage.setOnClickListener {
 //            rotateDice()
             object : CountDownTimer(1000, 100) {
                 override fun onFinish() {
-                    val sum = rotateDice()
+                    sum = rotateDice()
                     tvSum.text = sum.toString()
                 }
 
                 override fun onTick(p0: Long) {
-                    rotateDice()
+                    sum = rotateDice()
+                    tvSum.text = sum.toString()
                 }
             }.start()
         }
