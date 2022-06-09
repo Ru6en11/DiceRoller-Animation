@@ -2,16 +2,19 @@ package com.example.dicerolleranimation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import android.view.View
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import android.widget.ImageView
+import android.widget.TextView
 import java.util.*
 import java.util.Collections.rotate
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var diceImage: ImageView
+    lateinit var tvSum: TextView
     val random: Random = Random()
 
 
@@ -20,13 +23,24 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         diceImage = findViewById(R.id.dice_image)
+        tvSum = findViewById(R.id.tvSum)
 
         diceImage.setOnClickListener {
-            rotateDice()
+//            rotateDice()
+            object : CountDownTimer(1000, 100) {
+                override fun onFinish() {
+                    val sum = rotateDice()
+                    tvSum.text = sum.toString()
+                }
+
+                override fun onTick(p0: Long) {
+                    rotateDice()
+                }
+            }.start()
         }
     }
 
-    private fun rotateDice() {
+    private fun rotateDice(): Int {
         val i: Int = random.nextInt(5) + 1
         val anim: Animation = AnimationUtils.loadAnimation(this, R.anim.rotate)
         diceImage.startAnimation(anim)
@@ -39,5 +53,6 @@ class MainActivity : AppCompatActivity() {
             else -> R.drawable.dice6
         }
         diceImage.setImageResource(drawableResource)
+        return i;
     }
 }
